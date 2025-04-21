@@ -1,7 +1,7 @@
 // Пропишите здесь ваши параметры GitHub
-const GITHUB_TOKEN = 'YOUR_PERSONAL_ACCESS_TOKEN'; // Замените на ваш PAT, например: 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-const GITHUB_OWNER = 'your-username'; // Замените на владельца репозитория, например: 'john-doe'
-const GITHUB_REPO = 'travel-stories'; // Замените на название репозитория, например: 'travel-stories'
+const GITHUB_TOKEN = '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'; // Замените на ваш PAT, например: 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+const GITHUB_OWNER = 'VitaVitaMin'; // Замените на владельца репозитория, например: 'john-doe'
+const GITHUB_REPO = 'travel_map_creator'; // Замените на название репозитория, например: 'travel-stories'
 const GITHUB_PATH = 'data.json'; // Путь к файлу в репозитории, например: 'data.json' или 'path/to/data.json'
 
 let data = { people: [] }; // Данные загружаются с GitHub при старте
