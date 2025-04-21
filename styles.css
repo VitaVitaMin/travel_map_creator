@@ -211,7 +211,7 @@ button:hover {
   color: var(--accent-color);
 }
 
-#add-panel, #token-modal {
+#add-panel {
   position: fixed;
   top: 0;
   right: -400px;
@@ -226,7 +226,7 @@ button:hover {
   overflow-y: auto;
 }
 
-#add-panel:not(.panel-hidden), #token-modal:not(.hidden) {
+#add-panel:not(.panel-hidden) {
   right: 0;
   opacity: 1;
 }
@@ -329,20 +329,6 @@ input.error, textarea.error {
 
 .hidden {
   display: none;
-}
-
-.modal {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background: var(--card-bg);
-  padding: 20px;
-  border-radius: 8px;
-  width: 100%;
-  max-width: 400px;
 }
 
 @media (max-width: 600px) {
