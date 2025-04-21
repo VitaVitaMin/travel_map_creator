@@ -74,30 +74,10 @@
       </div>
     </form>
   </div>
-  <div id="token-modal" class="modal hidden" role="dialog" aria-labelledby="token-title">
-    <div class="modal-content">
-      <h2 id="token-title" data-i18n="tokenTitle">Настройка GitHub</h2>
-      <form id="token-form">
-        <label for="token-input" data-i18n="tokenLabel">GitHub Personal Access Token:</label>
-        <input type="password" id="token-input" placeholder="ghp_..." aria-label="GitHub токен">
-        <label for="owner-input" data-i18n="ownerLabel">Владелец репозитория:</label>
-        <input type="text" id="owner-input" placeholder="username" aria-label="Владелец репозитория">
-        <label for="repo-input" data-i18n="repoLabel">Название репозитория:</label>
-        <input type="text" id="repo-input" placeholder="my-repo" aria-label="Название репозитория">
-        <label for="path-input" data-i18n="pathLabel">Путь к файлу (например, data.json):</label>
-        <input type="text" id="path-input" placeholder="data.json" aria-label="Путь к файлу">
-        <div class="form-buttons">
-          <button type="button" id="save-token-button" data-i18n="saveTokenButton">Сохранить</button>
-          <button type="button" id="cancel-token-button" data-i18n="cancelTokenButton">Отмена</button>
-        </div>
-      </form>
-    </div>
-  </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-arrowheads@1.4.0/dist/leaflet-arrowheads.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>
