@@ -3,129 +3,99 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Путешествия</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>
-    body { margin: 0; font-family: Arial, sans-serif; background: #fff; }
-    .top-bar { background: #f4f4f4; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
-    .top-bar button { padding: 8px 16px; cursor: pointer; border: 1px solid #ccc; background: #eee; border-radius: 5px; }
-    #map { height: 70vh; width: 100%; display: none; }
-    #instruction { font-size: 0.9em; color: #555; text-align: center; margin: 20px 10px; }
-    #personSelector { position: absolute; top: 50px; left: 10px; background: #fff; border: 1px solid #ccc; display: none; padding: 10px; border-radius: 5px; }
-    #personSelector select { width: 200px; }
-  </style>
+  <title>Истории путешествий</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <h1 data-i18n="title">Истории путешествий</h1>
+      <div class="header-controls">
+        <select id="language-toggle" aria-label="Выбор языка">
+          <option value="ru">Русский</option>
+          <option value="en">English</option>
+        </select>
+        <label class="theme-toggle" title="Переключить тему">
+          <input type="checkbox" id="theme-toggle" aria-label="Переключить тему">
+          <i class="fas fa-moon"></i>
+        </label>
+      </div>
+    </div>
+    <div class="controls">
+      <input type="text" id="filter-input" placeholder="Фильтр по имени" data-i18n-placeholder="filterPlaceholder" aria-label="Фильтр по имени">
+      <select id="sort-select" aria-label="Сортировка">
+        <option value="name-asc" data-i18n="sortNameAsc">По имени (А-Я)</option>
+        <option value="name-desc" data-i18n="sortNameDesc">По имени (Я-А)</option>
+        <option value="cities-asc" data-i18n="sortCitiesAsc">По количеству городов (возр.)</option>
+        <option value="cities-desc" data-i18n="sortCitiesDesc">По количеству городов (убыв.)</option>
+      </select>
+      <button id="create-button" title="Создать новую запись" data-i18n="createButton"><i class="fas fa-plus"></i> Создать</button>
+      <label class="import-button" title="Импортировать данные">
+        <input type="file" id="import-button" accept=".json" aria-label="Импортировать JSON">
+        <i class="fas fa-upload"></i> <span data-i18n="importButton">Импорт</span>
+      </label>
+      <button id="export-csv-button" title="Экспортировать в CSV" data-i18n="exportCsvButton"><i class="fas fa-download"></i> Экспорт CSV</button>
+    </div>
+    <div class="people-list">
+      <select id="person-select" size="5" aria-label="Список людей">
+        <option value="" data-i18n="selectPerson">Выберите человека</option>
+      </select>
+      <div class="pagination" id="pagination"></div>
+    </div>
+    <div id="map"></div>
+    <div id="person-details" class="person-details"></div>
+  </div>
+  <div id="add-panel" class="panel-hidden" role="dialog" aria-labelledby="panel-title">
+    <button id="close-panel" class="close-button" aria-label="Закрыть панель"><i class="fas fa-times"></i></button>
+    <h2 id="panel-title" data-i18n="addTitle">Добавить историю</h2>
+    <form id="add-form">
+      <label for="name-input" data-tooltip="Введите ФИО (три слова с заглавной буквы)" data-i18n-tooltip="nameTooltip">ФИО публикующего:</label>
+      <input type="text" id="name-input" placeholder="Иванов Иван Иванович" aria-label="ФИО" data-i18n-placeholder="namePlaceholder">
+      <label for="phone-input" data-tooltip="Введите номер телефона (10 цифр или +7)" data-i18n-tooltip="phoneTooltip">Телефон публикующего:</label>
+      <input type="text" id="phone-input" placeholder="+71234567890" aria-label="Телефон" data-i18n-placeholder="phonePlaceholder">
+      <div id="cities-container">
+        <div class="city-entry">
+          <label for="city-input-0" data-i18n="cityLabel">Город 1:</label>
+          <input type="text" id="city-input-0" class="city-input" placeholder="Введите город" aria-label="Город 1" data-i18n-placeholder="cityPlaceholder">
+          <ul id="city-suggestions-0" class="suggestions"></ul>
+          <label for="city-desc-0" data-i18n="descLabel">Описание:</label>
+          <textarea id="city-desc-0" class="city-desc" placeholder="Что пережил герой в этом городе?" aria-label="Описание для города 1" data-i18n-placeholder="descPlaceholder"></textarea>
+        </div>
+      </div>
+      <button type="button" id="add-city-button" data-i18n="addCityButton"><i class="fas fa-plus-circle"></i> Добавить город</button>
+      <div class="form-buttons">
+        <button type="button" id="save-button" data-i18n="saveButton"><i class="fas fa-save"></i> Сохранить</button>
+        <button type="button" id="cancel-button" data-i18n="cancelButton"><i class="fas fa-ban"></i> Отмена</button>
+        <button type="button" id="delete-button" class="hidden" data-i18n="deleteButton"><i class="fas fa-trash"></i> Удалить</button>
+      </div>
+    </form>
+  </div>
+  <div id="token-modal" class="modal hidden" role="dialog" aria-labelledby="token-title">
+    <div class="modal-content">
+      <h2 id="token-title" data-i18n="tokenTitle">Настройка GitHub</h2>
+      <form id="token-form">
+        <label for="token-input" data-i18n="tokenLabel">GitHub Personal Access Token:</label>
+        <input type="password" id="token-input" placeholder="ghp_..." aria-label="GitHub токен">
+        <label for="owner-input" data-i18n="ownerLabel">Владелец репозитория:</label>
+        <input type="text" id="owner-input" placeholder="username" aria-label="Владелец репозитория">
+        <label for="repo-input" data-i18n="repoLabel">Название репозитория:</label>
+        <input type="text" id="repo-input" placeholder="my-repo" aria-label="Название репозитория">
+        <label for="path-input" data-i18n="pathLabel">Путь к файлу (например, data.json):</label>
+        <input type="text" id="path-input" placeholder="data.json" aria-label="Путь к файлу">
+        <div class="form-buttons">
+          <button type="button" id="save-token-button" data-i18n="saveTokenButton">Сохранить</button>
+          <button type="button" id="cancel-token-button" data-i18n="cancelTokenButton">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
-<div class="top-bar">
-  <button onclick="togglePersonSelector()">Люди</button>
-  <button onclick="goToCreatePage()">Создать</button>
-</div>
-
-<div id="personSelector">
-  <select id="personSelect" onchange="selectPerson()">
-    <option selected disabled>Выберите путешественника</option>
-  </select>
-</div>
-
-<div id="map"></div>
-
-<div id="instruction">
-  На этом сайте вы можете выбрать существующего путешественника или создать нового. После выбора будет показан маршрут его путешествий.
-</div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-let persons = {
-  "Фёдор Конюхов": { publisher: "Известный путешественник", phone: "+79000000000", cities: ["Москва", "Мурманск", "Кейптаун"] },
-  "Иван Бунин": { publisher: "Писатель и путешественник", phone: "+79000000001", cities: ["Воронеж", "Париж", "Ницца"] },
-  "Николай Пржевальский": { publisher: "Исследователь", phone: "+79000000002", cities: ["Смоленск", "Улан-Батор", "Пекин"] }
-};
-
-let map;
-
-function initializeMap() {
-  if (!map) {
-    map = L.map('map').setView([55.751244, 37.618423], 5);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
-  }
-}
-
-function togglePersonSelector() {
-  const selector = document.getElementById('personSelector');
-  if (selector.style.display === 'none') {
-    selector.style.display = 'block';
-    loadPersons();
-  } else {
-    selector.style.display = 'none';
-  }
-}
-
-function loadPersons() {
-  const select = document.getElementById('personSelect');
-  select.innerHTML = '<option selected disabled>Выберите путешественника</option>';
-  Object.keys(persons).forEach(fio => {
-    const option = document.createElement('option');
-    option.value = fio;
-    option.innerText = fio;
-    select.appendChild(option);
-  });
-}
-
-function selectPerson() {
-  const fio = document.getElementById('personSelect').value;
-  const person = persons[fio];
-  if (!person) return;
-
-  initializeMap();
-  document.getElementById('map').style.display = 'block';
-
-  map.eachLayer(layer => {
-    if (layer instanceof L.Marker || layer instanceof L.Polyline) {
-      map.removeLayer(layer);
-    }
-  });
-
-  let coords = [];
-
-  Promise.all(person.cities.map(city => getCoordinates(city))).then(results => {
-    results.forEach((coord, index) => {
-      if (coord) {
-        coords.push(coord);
-        L.marker(coord).addTo(map).bindPopup(person.cities[index]);
-      }
-    });
-
-    if (coords.length >= 2) {
-      L.polyline(coords, { color: 'blue' }).addTo(map);
-    }
-
-    if (coords.length > 0) {
-      map.setView(coords[0], 6);
-    }
-  });
-}
-
-async function getCoordinates(city) {
-  try {
-    const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(city)}`);
-    const data = await response.json();
-    if (data.length > 0) {
-      return [parseFloat(data[0].lat), parseFloat(data[0].lon)];
-    } else {
-      return null;
-    }
-  } catch (e) {
-    return null;
-  }
-}
-
-function goToCreatePage() {
-  window.location.href = 'create.html';
-}
-</script>
-
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-arrowheads@1.4.0/dist/leaflet-arrowheads.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
