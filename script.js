@@ -1,5 +1,5 @@
 // Пропишите здесь ваши параметры GitHub
-const GITHUB_TOKEN = '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'; // Замените на ваш PAT, например: 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+const GITHUB_TOKEN = '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'; // Замените на ваш PAT, например: 'ghp_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
 const GITHUB_OWNER = 'VitaVitaMin'; // Замените на владельца репозитория, например: 'john-doe'
 const GITHUB_REPO = 'travel_map_creator'; // Замените на название репозитория, например: 'travel-stories'
 const GITHUB_PATH = 'data.json'; // Путь к файлу в репозитории, например: 'data.json' или 'path/to/data.json'
