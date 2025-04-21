@@ -1,0 +1,369 @@
+:root {
+  --bg-color: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --card-bg: #ffffff;
+  --text-color: #2d3748;
+  --accent-color: #6b46c1;
+  --button-bg: #3182ce;
+  --button-hover: #2b6cb0;
+  --error-color: #e53e3e;
+  --delete-bg: #e53e3e;
+  --delete-hover: #c53030;
+}
+
+body.dark-theme {
+  --bg-color: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+  --card-bg: #1a202c;
+  --text-color: #e2e8f0;
+  --accent-color: #9f7aea;
+  --button-bg: #63b3ed;
+  --button-hover: #4299e1;
+  --delete-bg: #f56565;
+  --delete-hover: #e53e3e;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-color);
+  margin: 0;
+  padding: 20px;
+  color: var(--text-color);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: var(--card-bg);
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.theme-toggle, #language-toggle {
+  cursor: pointer;
+}
+
+.theme-toggle input {
+  display: none;
+}
+
+.theme-toggle i {
+  font-size: 1.5rem;
+  color: var(--text-color);
+}
+
+#language-toggle {
+  padding: 8px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background: var(--card-bg);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+#filter-input, #sort-select, #person-select, input, button, textarea {
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+#filter-input, #sort-select, #person-select {
+  background: var(--card-bg);
+}
+
+#filter-input:focus, #sort-select:focus, #person-select:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.2);
+}
+
+button {
+  background: var(--button-bg);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: transform 0.2s ease;
+}
+
+button:hover {
+  background: var(--button-hover);
+  transform: translateY(-2px);
+}
+
+#delete-button {
+  background: var(--delete-bg);
+}
+
+#delete-button:hover {
+  background: var(--delete-hover);
+}
+
+.import-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 12px;
+  background: #38b2ac;
+  color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.import-button:hover {
+  background: #319795;
+}
+
+.import-button input {
+  display: none;
+}
+
+#export-csv-button {
+  background: #2f855a;
+}
+
+#export-csv-button:hover {
+  background: #276749;
+}
+
+.people-list {
+  margin: 20px 0;
+}
+
+#person-select {
+  width: 100%;
+  max-height: 200px;
+}
+
+.pagination {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  font-size: 0.9rem;
+}
+
+#map {
+  height: 400px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.person-details {
+  margin-top: 20px;
+  padding: 15px;
+  background: var(--card-bg);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.person-details h3 {
+  margin: 0 0 10px;
+  font-size: 1.3rem;
+}
+
+.person-details ul {
+  list-style: none;
+  padding: 0;
+}
+
+.person-details li {
+  margin-bottom: 10px;
+}
+
+.person-details li strong {
+  color: var(--accent-color);
+}
+
+#add-panel, #token-modal {
+  position: fixed;
+  top: 0;
+  right: -400px;
+  width: 400px;
+  height: 100%;
+  background: var(--card-bg);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transition: right 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+#add-panel:not(.panel-hidden), #token-modal:not(.hidden) {
+  right: 0;
+  opacity: 1;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+  display: block;
+  position: relative;
+}
+
+label[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background: #4a5568;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  z-index: 10;
+  top: -30px;
+  left: 0;
+}
+
+input.error, textarea.error {
+  border-color: var(--error-color);
+}
+
+.city-entry {
+  margin-bottom: 15px;
+}
+
+.city-input {
+  position: relative;
+}
+
+.city-desc {
+  width: 100%;
+  min-height: 80px;
+  resize: vertical;
+}
+
+.suggestions {
+  list-style: none;
+  padding: 0;
+  margin: 5px 0 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  background: var(--card-bg);
+}
+
+.suggestions li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.suggestions li:hover {
+  background: #edf2f7;
+}
+
+#add-city-button {
+  background: #38b2ac;
+}
+
+#add-city-button:hover {
+  background: #319795;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#save-button {
+  background: #3182ce;
+}
+
+#cancel-button {
+  background: #e53e3e;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 400px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .controls {
+    flex-direction: column;
+  }
+
+  #filter-input, #sort-select, #person-select, button, .import-button {
+    width: 100%;
+    max-width: none;
+  }
+
+  #map {
+    height: 300px;
+  }
+}
